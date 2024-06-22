@@ -582,9 +582,13 @@ public class StripeClient {
 
     StripeResponseGetterOptions buildOptions() {
       if (this.apiKey == null) {
+        // UID 0
+        BranchCoverageUtil.insertXAtIndex(0);
         throw new IllegalArgumentException(
             "No API key provided. Use setApiKey to set the Stripe API key");
       }
+      // UID 1
+      BranchCoverageUtil.insertXAtIndex(1);
       return new ClientStripeResponseGetterOptions(
           this.apiKey,
           this.clientId,
