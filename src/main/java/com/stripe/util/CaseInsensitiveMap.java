@@ -1,5 +1,7 @@
 package com.stripe.util;
 
+import com.stripe.BranchCoverageUtil;
+
 import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.Collection;
@@ -60,8 +62,12 @@ public class CaseInsensitiveMap<V> extends AbstractMap<String, V>
     String keyLower = convertKey(key);
     Entry<String, V> entry = this.store.get(keyLower);
     if (entry == null) {
+      // UID 2
+      BranchCoverageUtil.insertXAtIndex(2);
       return null;
     }
+    // UID 3
+    BranchCoverageUtil.insertXAtIndex(3);
     return entry.getValue();
   }
 

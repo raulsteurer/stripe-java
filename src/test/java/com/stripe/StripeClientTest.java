@@ -37,7 +37,7 @@ public class StripeClientTest extends BaseStripeTest {
   }
 
   @Test
-  public void testBuildClientWithNullApiKey() {
+  public void testBuildClientOptionsWithNullApiKey() {
     assertThrowsExactly(IllegalArgumentException.class, () -> {
       StripeClient.builder().setApiKey(null).buildOptions();
     });

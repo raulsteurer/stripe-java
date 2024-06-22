@@ -179,7 +179,7 @@ public class CaseInsensitiveMapTest {
   }
 
   @Test
-  public void testGetNull() {
+  public void testGetNullKey() {
     CaseInsensitiveMap<String> map =
       CaseInsensitiveMap.of(ImmutableMap.of("Some-Key", "Some value!"));
       assertNull(map.get(null));
