@@ -1,17 +1,15 @@
 package com.stripe.util;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import java.util.AbstractMap;
 import java.util.Map;
+
+import com.stripe.StripeClient;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CaseInsensitiveMapTest {
   @Test
@@ -106,6 +104,13 @@ public class CaseInsensitiveMapTest {
   }
 
   @Test
+  public void testRemoveNull() {
+    CaseInsensitiveMap<String> map =
+      CaseInsensitiveMap.of(ImmutableMap.of("Some-Key", "Some value!"));
+    assertNull(map.remove(null));
+  }
+
+  @Test
   public void testPutAll() {
     CaseInsensitiveMap<String> map =
         CaseInsensitiveMap.of(ImmutableMap.of("Some-Key", "Some value!"));
@@ -183,5 +188,12 @@ public class CaseInsensitiveMapTest {
     CaseInsensitiveMap<String> map =
       CaseInsensitiveMap.of(ImmutableMap.of("Some-Key", "Some value!"));
       assertNull(map.get(null));
+  }
+
+  @Test
+  public void testConvertKey() {
+    assertThrowsExactly(IllegalArgumentException.class, () -> {
+      new CaseInsensitiveMap().remove(1);
+    });
   }
 }

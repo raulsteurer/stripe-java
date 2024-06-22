@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 import java.io.File;
 
 public class BranchCoverageUtil {
-  private final static int BRANCHES_COUNT = 10;
+  private final static int BRANCHES_COUNT = 15;
 
   private final static Logger logger = Logger.getLogger(BranchCoverageUtil.class.getName());
 
