@@ -85,8 +85,10 @@ public class CaseInsensitiveMap<V> extends AbstractMap<String, V>
     String keyLower = convertKey(key);
     Entry<String, V> entry = this.store.remove(keyLower);
     if (entry == null) {
+      BranchCoverageUtil.insertXAtIndex(10);
       return null;
     }
+    BranchCoverageUtil.insertXAtIndex(11);
     return entry.getValue();
   }
 
@@ -118,10 +120,13 @@ public class CaseInsensitiveMap<V> extends AbstractMap<String, V>
 
   private static String convertKey(Object key) {
     if (key == null) {
+      BranchCoverageUtil.insertXAtIndex(12);
       return null;
     } else if (key instanceof String) {
+      BranchCoverageUtil.insertXAtIndex(13);
       return ((String) key).toLowerCase();
     }
+    BranchCoverageUtil.insertXAtIndex(14);
     throw new IllegalArgumentException("key must be a String");
   }
 }
