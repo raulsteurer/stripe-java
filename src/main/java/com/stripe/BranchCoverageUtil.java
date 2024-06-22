@@ -13,6 +13,9 @@ import java.util.logging.Logger;
 import java.io.File;
 
 public class BranchCoverageUtil {
+
+  private final static Logger logger = Logger.getLogger(BranchCoverageUtil.class.getName());
+
   public static void writeDefault() {
     String filePath = "branchCoverage.txt";
 
@@ -20,7 +23,7 @@ public class BranchCoverageUtil {
     try {
       file.createNewFile();
     } catch (IOException e) {
-      Logger.getLogger(BranchCoverageUtil.class.getName()).log(Level.SEVERE, "Failed to create to file: " + filePath, e);
+      logger.log(Level.SEVERE, "Failed to create to file: " + filePath, e);
     }
 
     try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(filePath), StandardCharsets.UTF_8)) {
@@ -30,7 +33,7 @@ public class BranchCoverageUtil {
         writer.write("0");
       }
     } catch (IOException e) {
-      Logger.getLogger(BranchCoverageUtil.class.getName()).log(Level.SEVERE, "Failed to write to file: " + filePath, e);
+      logger.log(Level.SEVERE, "Failed to write to file: " + filePath, e);
     }
   }
 
@@ -61,7 +64,7 @@ public class BranchCoverageUtil {
         writer.write(content.toString());
       }
     } catch (IOException e) {
-      Logger.getLogger(BranchCoverageUtil.class.getName()).log(Level.SEVERE, "Failed to read from or write to file: " + filePath, e);
+      logger.log(Level.SEVERE, "Failed to read from or write to file: " + filePath, e);
     }
   }
 }
