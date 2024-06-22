@@ -1,6 +1,7 @@
 package com.stripe.net;
 
 import com.google.gson.*;
+import com.stripe.BranchCoverageUtil;
 import com.stripe.exception.InvalidRequestException;
 import com.stripe.model.*;
 import java.io.UnsupportedEncodingException;
@@ -85,17 +86,22 @@ public abstract class ApiResource extends StripeObject implements StripeActiveOb
     // Preserve original behavior that passing null for an object id will lead
     // to us actually making a request to /v1/foo/null
     if (str == null) {
+      BranchCoverageUtil.insertXAtIndex(4);
       return null;
     }
+    BranchCoverageUtil.insertXAtIndex(5);
 
     try {
       // Don't use strict form encoding by changing the square bracket control
       // characters back to their literals. This is fine by the server, and
       // makes these parameter strings easier to read.
-      return URLEncoder.encode(str, CHARSET.name()).replaceAll("%5B", "[").replaceAll("%5D", "]");
+      String result = URLEncoder.encode(str, CHARSET.name()).replaceAll("%5B", "[").replaceAll("%5D", "]");
+      BranchCoverageUtil.insertXAtIndex(6);
+      return result;
     } catch (UnsupportedEncodingException e) {
       // This can literally never happen, and lets us avoid having to catch
       // UnsupportedEncodingException in callers.
+      BranchCoverageUtil.insertXAtIndex(7);
       throw new AssertionError("UTF-8 is unknown");
     }
   }
@@ -142,9 +148,10 @@ public abstract class ApiResource extends StripeObject implements StripeActiveOb
       String newId, ExpandableField<T> currentObject) {
     if (currentObject == null
         || (currentObject.isExpanded() && !Objects.equals(currentObject.getId(), newId))) {
+      BranchCoverageUtil.insertXAtIndex(8);
       return new ExpandableField<>(newId, null);
     }
-
+    BranchCoverageUtil.insertXAtIndex(9);
     return new ExpandableField<>(newId, currentObject.getExpanded());
   }
 
