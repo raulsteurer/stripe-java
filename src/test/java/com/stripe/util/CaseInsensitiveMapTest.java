@@ -6,7 +6,6 @@ import com.google.common.collect.ImmutableSet;
 import java.util.AbstractMap;
 import java.util.Map;
 
-import com.stripe.StripeClient;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
