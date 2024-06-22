@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import java.io.File;
 
 public class BranchCoverageUtil {
+  private final static int BRANCHES_COUNT = 10;
 
   private final static Logger logger = Logger.getLogger(BranchCoverageUtil.class.getName());
 
@@ -28,7 +29,7 @@ public class BranchCoverageUtil {
 
     try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(filePath), StandardCharsets.UTF_8)) {
       // Writing an empty string to the file
-      for (int i = 0; i < 4 * 20; i++)
+      for (int i = 0; i < BRANCHES_COUNT; i++)
       {
         writer.write("0");
       }
