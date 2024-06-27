@@ -230,7 +230,8 @@ Other than our individual tasks in this assignment I also helped with writing an
 
 ### Kacper Machaj
 
-
+I have created our own branch coverage tool. In order to do so I created a branchCoverageUtil file and also changed the build.gradle file to run a static method of my class by using Java reflections. I also wrote tests that checks what will getKey(null) as well as buildOptions(null) return. By doing that I have increased the branch coverage for both of these functions to 100%. 
 
 ### Egor Kolesov
 
+ I have created 5 additional tests and extended coverage to 100% for two methods of the Invoice class, specifically SetAccountTaxIds and SetAccountTaxIdObjects. I additionally changed the setup process for our branch coverage tool to correctly work on Windows.
