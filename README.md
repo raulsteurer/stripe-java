@@ -1,335 +1,236 @@
-# Stripe Java client library
+# Report for Assignment 1
 
-[![Maven Central](https://img.shields.io/badge/maven--central-v25.13.0-blue)](https://mvnrepository.com/artifact/com.stripe/stripe-java)
-[![JavaDoc](http://img.shields.io/badge/javadoc-reference-blue.svg)](https://stripe.dev/stripe-java)
-[![Build Status](https://github.com/stripe/stripe-java/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/stripe/stripe-java/actions?query=branch%3Amaster)
-[![Coverage Status](https://coveralls.io/repos/github/stripe/stripe-java/badge.svg?branch=master)](https://coveralls.io/github/stripe/stripe-java?branch=master)
+## Project chosen
 
-The official [Stripe][stripe] Java client library.
+Name: stripe-java
 
-## Installation
+URL: [stripe-java link](https://github.com/stripe/stripe-java)
 
-### Requirements
+Number of lines of code and the tool used to count it: 314 836 - Statistic plugin for Intellij IDEA
 
-- Java 1.8 or later
+Programming language: Java
 
-### Gradle users
+## Coverage measurement
 
-Add this dependency to your project's build file:
+### Existing tool
 
-```groovy
-implementation "com.stripe:stripe-java:25.13.0"
-```
+Since the project was written in Java we decided to use the built-in coverage tool of Intellij IDEA IDE in order to get the branch coverage. IDEA allowed us to run the project’s JUNIT test framework by simply running the “test” configuration in gradle with coverage.
 
-### Maven users
+![Existing Coverage Tool Image 1](./images/RaulImage1.png)
 
-Add this dependency to your project's POM:
+The “test” gradle configuration runs all of the tests that are part of the test directory of the repository.
 
-```xml
-<dependency>
-  <groupId>com.stripe</groupId>
-  <artifactId>stripe-java</artifactId>
-  <version>25.13.0</version>
-</dependency>
-```
+This is how IDEA displays the branch coverage after running the gradle “test” configuration:
 
-### Others
+![Existing Coverage Tool Image 2](./images/RaulImage2.png)
 
-You'll need to manually install the following JARs:
+### Your own coverage tool
 
-- [The Stripe JAR](https://search.maven.org/remotecontent?filepath=com/stripe/stripe-java/25.13.0/stripe-java-25.13.0.jar)
-- [Google Gson][gson] from <https://repo1.maven.org/maven2/com/google/code/gson/gson/2.10.1/gson-2.10.1.jar>.
+#### Raul Steurer
 
-### [ProGuard][proguard]
+Diff where I added the coverage tool: [Original Repo](https://github.com/raulsteurer/stripe-java/commit/80c5b5c7b4126188aae8e8636e3552ffc5770c54)
 
-If you're planning on using ProGuard, make sure that you exclude the Stripe
-client library. You can do this by adding the following to your `proguard.cfg`
-file:
+##### ApiResource.urlEncode():
 
-```
--keep class com.stripe.** { *; }
-```
+![Raul Own Coverage Tool 1](./images/RaulImage3.png)
 
-## Documentation
+This method has 4 branches, but only 2 of them are covered in the original state.
 
-Please see the [Java API docs][api-docs] for the most
-up-to-date documentation.
+##### ApiResource.setExpandableFieldId():
 
-See [video demonstrations][youtube-playlist] covering how to use the library.
+![Raul Own Coverage Tool 2](./images/RaulImage4.png)
 
-You can also refer to the [online Javadoc][javadoc].
+This method has 2 branches, but only 1 of them is covered in the original state.
 
-## Usage
+#### Kacper Machaj
 
-StripeExample.java
+[Link to Own Coverage Tool](https://github.com/stripe/stripe-java/commit/03ff0b4f5325740ec93c7756a4e85ea7d08980bb)
 
-```java
-import java.util.HashMap;
-import java.util.Map;
+##### CaseInsensitiveMap.get()
 
-import com.stripe.StripeClient;
-import com.stripe.exception.StripeException;
-import com.stripe.model.Customer;
-import com.stripe.net.RequestOptions;
-import com.stripe.param.CustomerCreateParams;
+![Kacper Own Coverage Tool 1](./images/KacperImage1.png)
 
-public class StripeExample {
+Our branch coverage measurement tool initially creates a file filled with 0’s. Whenever a branch with UID = n is executed (of course only inside our chosen functions) the 0 at nth place in the is replaced by an X. My function has 2 branches and only one of the branches was reached through the existing tests. Hence one 0 one X.
 
-    public static void main(String[] args) {
-        StripeClient client = new StripeClient("sk_test_...");
-        CustomerCreateParams params =
-            CustomerCreateParams
-                .builder()
-                .setDescription("Example description")
-                .setEmail("test@example.com")
-                .setPaymentMethod("pm_card_visa")  // obtained via Stripe.js
-                .build();
+##### StripeClient.buildOptions()
 
-        try {
-            Customer customer = client.customers().create(params);
-            System.out.println(customer);
-        } catch (StripeException e) {
-            e.printStackTrace();
-        }
-    }
-}
-```
+![Kacper Own Coverage Tool 2](./images/KacperImage2.png)
 
-See the project's [functional tests][functional-tests] for more examples.
+This function also has 2 branches and only one is initially reached.
 
-### Per-request Configuration
+#### Emre Cebi
 
-All of the request methods accept an optional `RequestOptions` object. This is
-used if you want to set an [idempotency key][idempotency-keys], if you are
-using [Stripe Connect][connect-auth], or if you want to pass the secret API
-key on each method.
+[Link to Own Coverage Tool](https://github.com/raulsteurer/stripe-java/commit/e913127b1af524bdc9835e830827ae283295feff)
 
-```java
-RequestOptions requestOptions = RequestOptions.builder()
-    .setApiKey("sk_test_...")
-    .setIdempotencyKey("a1b2c3...")
-    .setStripeAccount("acct_...")
-    .build();
+##### CaseInsensitiveMap.remove()
 
-client.customers().list(requestOptions);
-
-client.customers().retrieve("cus_123456789", requestOptions);
-```
-
-### Configuring automatic retries
-
-The library can be configured to automatically retry requests that fail due to
-an intermittent network problem or other knowingly non-deterministic errors.
-This can be enabled globally:
-
-```java
-StripeClient client = StripeClient.builder()
-        .setMaxNetworkRetries(2)
-        .build();
-```
-
-Or on a finer grain level using `RequestOptions`:
-
-```java
-RequestOptions options = RequestOptions.builder()
-    .setMaxNetworkRetries(2)
-    .build();
-client.customers().create(params, options);
-```
+![Emre Own Coverage Tool 1](./images/EmreRemove.png)
 
-[Idempotency keys][idempotency-keys] are added to requests to guarantee that
-retries are safe.
+##### CaseInsensitiveMap.convertKey()
 
-### Configuring Timeouts
+![Emre Own Coverage Tool 2](./images/EmreConvertKey.png)
 
-Connect and read timeouts can be configured globally:
+#### Egor Kolesov
 
-```java
-StripeClient client = StripeClient.builder()
-        .setConnectTimeout(30 * 1000); // in milliseconds
-        .setReadTimeout(80 * 1000);
-        .build();
-```
+[Link to Own Coverage Tool](https://github.com/raulsteurer/stripe-java/commit/e913127b1af524bdc9835e830827ae283295feff)
 
-Or on a finer grain level using `RequestOptions`:
+##### Temp
 
-```java
-RequestOptions options = RequestOptions.builder()
-    .setConnectTimeout(30 * 1000) // in milliseconds
-    .setReadTimeout(80 * 1000)
-    .build();
-client.customers().create(params, options);
-```
+![Egor Own Coverage Tool 1]()
 
-Please take care to set conservative read timeouts. Some API requests can take
-some time, and a short timeout increases the likelihood of a problem within our
-servers.
+##### Temp
 
-### Configuring DNS Cache TTL
+![Egor Own Coverage Tool 2]()
 
-We cannot guarantee that the IP address of the Stripe API will be static.
-Commonly, default JVM configurations can have their DNS cache TTL set to
-forever. If Stripe's IP address changes, your application's requests to
-Stripe will all fail until the JVM restarts. Therefore we recommend that
-you modify the JVM's [networkaddress.cache.ttl
-property](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/net/doc-files/net-properties.html)
-to `60` seconds.
+## Coverage improvement
 
-### How to use undocumented parameters and properties
+### Individual tests
 
-stripe-java is a typed library and it supports all public properties or parameters.
+#### Raul Steurer
 
-Stripe sometimes has beta which introduces new properties or parameters that are not immediately public. The library does not support these properties or parameters until they are public but there is still an approach that allows you to use them.
+[Link to diff where I added the new test cases](https://github.com/raulsteurer/stripe-java/commit/46eeb5b10a3e6bc7f7f6e0e171c7b38dadc6fe2b)
 
-#### Parameters
+##### ApiResource.urlEncode():
 
-To pass undocumented parameters to Stripe using stripe-java you need to use the `putExtraParam()` method, as shown below:
+Old Coverage:
 
-```java
-CustomerCreateParams params =
-  CustomerCreateParams.builder()
-    .setEmail("jenny.rosen@example.com")
-    .putExtraParam("secret_feature_enabled", "true")
-    .putExtraParam("secret_parameter[primary]", "primary value")
-    .putExtraParam("secret_parameter[secondary]", "secondary value")
-    .build();
+![Raul Old Coverage 1](./images/RaulImage3.png)
 
-client.customers().create(params);
-```
+New Coverage:
 
-#### Properties
+![Raul New Coverage 1](./images/RaulImage5.png)
 
-To retrieve undocumented properties from Stripe using Java you can use an option in the library to return the raw JSON object and return the property as a native type. An example of this is shown below:
+I improved coverage by asserting that the methods work correctly when they are called with a null pointer. I have also added tests that assert that the correct type of error gets thrown when UrlEncode fails.
+I improved branch coverage to 100%
 
-```java
-final Customer customer = client.customers().retrieve("cus_1234");
-Boolean featureEnabled =
-  customer.getRawJsonObject()
-    .getAsJsonPrimitive("secret_feature_enabled")
-    .getAsBoolean();
-String primaryValue =
-  customer.getRawJsonObject()
-    .getAsJsonObject("secret_parameter")
-    .getAsJsonPrimitive("primary")
-    .getAsString();
-String secondaryValue =
-  customer.getRawJsonObject()
-    .getAsJsonObject("secret_parameter")
-    .getAsJsonPrimitive("secondary")
-    .getAsString();
-```
+##### ApiResource.setExpandableFieldId():
 
-### Writing a plugin
+Old Coverage:
 
-If you're writing a plugin that uses the library, we'd appreciate it if you
-identified using `Stripe.setAppInfo()`:
+![Raul Old Coverage 2](./images/RaulImage4.png)
 
-```java
-Stripe.setAppInfo("MyAwesomePlugin", "1.2.34", "https://myawesomeplugin.info");
-```
+New Coverage:
 
-This information is passed along when the library makes calls to the Stripe
-API.
+![Raul New Coverage 2](./images/RaulImage6.png)
 
-### Request latency telemetry
+I test that the function works as expected when called with a null pointer.
+I improved branch coverage to 100%
 
-By default, the library sends request latency telemetry to Stripe. These
-numbers help Stripe improve the overall latency of its API for all users.
+#### Kacper Machaj
 
-You can disable this behavior if you prefer:
+##### testGetNullKey
 
-```java
-Stripe.enableTelemetry = false;
-```
+[Kacper Test 1](https://github.com/stripe/stripe-java/commit/4af799bbd83d270268251dceac5617125e700e7d
+)
 
-### Beta SDKs
+Old coverage:
 
-Stripe has features in the beta phase that can be accessed via the beta version of this package.
-We would love for you to try these and share feedback with us before these features reach the stable phase.
-To install a beta version of stripe-java follow steps [installation steps above](#installation) using the beta library version.
+![Kacper Old Coverage 1](./images/KacperImage1.png)
 
-> **Note**
-> There can be breaking changes between beta versions. Therefore we recommend pinning the package version to a specific version. This way you can install the same version each time without breaking changes unless you are intentionally looking for the latest beta version.
+New coverage:
 
-We highly recommend keeping an eye on when the beta feature you are interested in goes from beta to stable so that you can move from using a beta version of the SDK to the stable version.
+![Kacper New Coverage 1](./images/KacperImage3.png)
 
-If your beta feature requires a `Stripe-Version` header to be sent, set the `Stripe.stripeVersion` field by calling `Stripe.addBetaVersion`:
+That test improves the branch coverage for the getKey() method from 50% to 100%. This function has two branches and initially only one of them was tested. My test tests the previously untested branch.
 
-> **Note**
-> Beta version headers can only be set in beta versions of the library.
+##### testBuildClientOptionsWithNullApiKey
 
-```java
-Stripe.addBetaVersion("feature_beta", "v3");
-```
+[Kacper Test 2](https://github.com/stripe/stripe-java/commit/9eca2abf96c6a18f5958acf5a7ae152a9a2c4161
+)
 
-## Support
+Old coverage:
 
-New features and bug fixes are released on the latest major version of the Stripe Java client library. If you are on an older major version, we recommend that you upgrade to the latest in order to use the new features and bug fixes including those for security vulnerabilities. Older major versions of the package will continue to be available for use, but will not be receiving any updates.
+![Kacper Old Coverage 2](./images/KacperImage2.png)
 
-## Development
+New coverage:
 
-JDK 17 is required to build the Stripe Java library. By default, tests use the same Java runtime as the build.
-To use a custom version of Java runtime for tests set the `JAVA_TEST_HOME` environment variable to runtime's
-home directory.
+![Kacper New Coverage 2](./images/KacperImage4.png)
 
-The test suite depends on [stripe-mock], so make sure to fetch and run it from a
-background terminal ([stripe-mock's README][stripe-mock] also contains
-instructions for installing via Homebrew and other methods):
+That test improves the branch coverage for the buildOptions() method from 50% to 100%. This function has two branches and initially only one of them was tested. My test tests the previously untested branch.
 
-```sh
-go get -u github.com/stripe/stripe-mock
-stripe-mock
-```
+#### Emre Cebi
 
-To run all checks (tests and code formatting):
+[Link to Improvement Commit](https://github.com/raulsteurer/stripe-java/commit/e913127b1af524bdc9835e830827ae283295feff)
 
-```sh
-./gradlew check
-```
+##### TestRemoveNull
 
-To run the tests:
+Old coverage:
 
-```sh
-./gradlew test
-```
+![Emre Old Coverage 1](./images/EmreRemove.png)
 
-You can run particular tests by passing `--tests Class#method`. Make sure you
-use the fully qualified class name. For example:
+New coverage:
 
-```sh
-./gradlew test --tests com.stripe.model.AccountTest
-./gradlew test --tests com.stripe.functional.CustomerTest
-./gradlew test --tests com.stripe.functional.CustomerTest.testCustomerCreate
-```
+![Emre New Coverage 2](./images/EmreTestRemoveNullNew.png)
 
-The library uses [Spotless][spotless] along with
-[google-java-format][google-java-format] for code formatting. Code must be
-formatted before PRs are submitted, otherwise CI will fail. Run the formatter
-with:
+For the first one I added a simple null value test to check how the function behaves when a null key is removed. This increased the test coverage from 80% to 90%
+##### TestConvertKey
 
-```sh
-./gradlew spotlessApply
-```
+Old coverage:
 
-The library uses [Project Lombok][lombok]. While it is not a requirement, you
-might want to install a [plugin][lombok-plugins] for your favorite IDE to
-facilitate development.
+![Emre Old Coverage 2](./images/EmreConvertKey.png)
 
-[api-docs]: https://stripe.com/docs/api?lang=java
-[connect-auth]: https://stripe.com/docs/connect/authentication#stripe-account-header
-[functional-tests]: https://github.com/stripe/stripe-java/blob/master/src/test/java/com/stripe/functional/
-[google-java-format]: https://github.com/google/google-java-format
-[gson]: https://github.com/google/gson
-[idempotency-keys]: https://stripe.com/docs/api/idempotent_requests?lang=java
-[javadoc]: https://stripe.dev/stripe-java
-[lombok]: https://projectlombok.org
-[lombok-plugins]: https://projectlombok.org/setup/overview
-[proguard]: https://www.guardsquare.com/en/products/proguard
-[spotless]: https://github.com/diffplug/spotless
-[stripe]: https://stripe.com
-[stripe-mock]: https://github.com/stripe/stripe-mock
-[youtube-playlist]: https://www.youtube.com/playlist?list=PLy1nL-pvL2M5TnSGVjEHTTMgdnnHi-KPg
+New coverage:
 
-<!--
-# vim: set tw=79:
--->
+![Emre New Coverage 2](./images/EmreTestConvertKeyNew.png)
+
+For the second test as the tested function is a private function it cannot be called directly so I used an assetsThrowsExacly method to catch the error the function throws called IllegalArgumentException. In this test inside the asset method I create a new CaseInsensitiveMap with no type declaration and try to remove the illegal key “1”. As all keys need to be string or null and all functions call the ConvertKey function to convert the key into a case insensitive one this archives the desired effect.
+
+With the addition of the final test, the branch coverage of CaseInsensitiveMap is increased to 100%.
+
+#### Egor Kolesov
+
+[Link to Own Coverage Tool](https://github.com/raulsteurer/stripe-java/commit/e913127b1af524bdc9835e830827ae283295feff)
+
+##### Temp
+
+Old coverage:
+
+![Egor Old Coverage 1]()
+
+New coverage:
+
+![Egor New Coverage 2]()
+
+
+
+##### Temp
+
+Old coverage:
+
+![Egor Old Coverage 2]()
+
+New coverage:
+
+![Egor New Coverage 2]()
+
+
+
+### Overall
+
+Overall we were able to detect some important areas in this repository that was not covered by branch testing and improve upon them.
+
+Old Coverage (Existing Tool):
+
+![Existing Coverage Tool Old](./images/RaulImage2.png)
+
+New Coverage (Existing Tool):
+
+![Existing Coverage Tool New](./images/RaulImage7.png)
+
+## Statement of individual contributions
+
+### Raul Steurer
+
+I checked dozens of projects to see if they are suitable for our
+assignment. I then set up the git repo.
+
+### Emre Cebi
+
+Other than our individual tasks in this assignment I also helped with writing and formating the report and organised the repository.
+
+### Kacper Machaj
+
+
+
+### Egor Kolesov
+
