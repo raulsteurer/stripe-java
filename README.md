@@ -72,15 +72,15 @@ This function also has 2 branches and only one is initially reached.
 
 #### Egor Kolesov
 
-[Link to Own Coverage Tool](https://github.com/raulsteurer/stripe-java/commit/e913127b1af524bdc9835e830827ae283295feff)
+[Link to Own Coverage Tool](https://github.com/raulsteurer/stripe-java/pull/6/commits/6b0a2686221d976380abfbac63371a5d700c2c3e)
 
-##### Temp
+##### SetAccountTaxIds
 
-![Egor Own Coverage Tool 1]()
+![Egor Own Coverage Tool 1](./images/ek_image1.png)
 
-##### Temp
+##### SetAccountTaxIdObjects
 
-![Egor Own Coverage Tool 2]()
+![Egor Own Coverage Tool 2](./images/ek_image6.png)
 
 ## Coverage improvement
 
@@ -179,31 +179,31 @@ With the addition of the final test, the branch coverage of CaseInsensitiveMap i
 
 #### Egor Kolesov
 
-[Link to Own Coverage Tool](https://github.com/raulsteurer/stripe-java/commit/e913127b1af524bdc9835e830827ae283295feff)
+[Link to Improvement Commit](https://github.com/raulsteurer/stripe-java/pull/6/commits/6b0a2686221d976380abfbac63371a5d700c2c3e)
 
-##### Temp
-
-Old coverage:
-
-![Egor Old Coverage 1]()
-
-New coverage:
-
-![Egor New Coverage 2]()
-
-
-
-##### Temp
+##### SetAccountTaxIds
 
 Old coverage:
 
-![Egor Old Coverage 2]()
+![Egor Old Coverage 1](./images/ek_image1.png)
 
 New coverage:
 
-![Egor New Coverage 2]()
+![Egor New Coverage 1](./images/ek_image2.png)
 
+The coverage for the function improved from 0 to 100% (not possible to display numerically for individual methods via the IntelliJ coverage tool), total branch coverage for the class improved from 18% to 25% as seen on the screenshots above. The coverage improved because additional tests for all possible branches in the method were introduced.
 
+##### SetAccountTaxIdObjects
+
+Old coverage:
+
+![Egor Old Coverage 2](./images/ek_image6.png)
+
+New coverage:
+
+![Egor New Coverage 2](./images/ek_image7.png)
+
+The coverage for the function improved from 0 to 100% (not possible to display numerically for individual methods via the IntelliJ coverage tool, has to be looked at manually), total branch coverage for the class improved from 18% to 21% as seen on the screenshots above. The coverage improved because additional tests for all possible branches in the method were introduced.
 
 ### Overall
 
