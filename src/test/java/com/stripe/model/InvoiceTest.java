@@ -8,6 +8,9 @@ import com.stripe.BaseStripeTest;
 import com.stripe.net.ApiResource;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class InvoiceTest extends BaseStripeTest {
   @Test
   public void testDeserialize() throws Exception {
@@ -61,5 +64,74 @@ public class InvoiceTest extends BaseStripeTest {
 
     assertEquals(
         invoice, ApiResource.GSON.fromJson(ApiResource.GSON.toJson(invoice), Invoice.class));
+  }
+
+  @Test
+  public void testSetAccountTaxIds_NullInput() {
+    Invoice invoice = new Invoice();
+    invoice.setAccountTaxIds(Arrays.asList("id1", "id2"));
+
+    invoice.setAccountTaxIds(null);
+
+    assertNull(invoice.getAccountTaxIds());
+  }
+
+  @Test
+  public void testSetAccountTaxIds_SameIds() {
+    List<String> ids = Arrays.asList("id1", "id2");
+    Invoice invoice = new Invoice();
+    invoice.setAccountTaxIds(ids);
+
+    invoice.setAccountTaxIds(ids);
+
+    assertEquals(ids, invoice.getAccountTaxIds());
+  }
+
+
+  @Test
+  public void testSetInvoiceTaxIds_DifferentIds() {
+    List<String> initialIds = Arrays.asList("id1", "id2");
+    List<String> newIds = Arrays.asList("id3", "id4");
+    Invoice invoice = new Invoice();
+    invoice.setAccountTaxIds(initialIds);
+
+    invoice.setAccountTaxIds(newIds);
+
+    assertEquals(newIds, invoice.getAccountTaxIds());
+  }
+
+  @Test
+  public void testSetAccountTaxIdObjects_NullInput() {
+    // Arrange
+    Invoice invoice = new Invoice();
+
+    // Act
+    invoice.setAccountTaxIdObjects(null);
+
+    // Assert
+    assertNull(invoice.getAccountTaxIds());
+  }
+
+  @Test
+  public void testSetAccountTaxIdObjects_NonNullInput() {
+    // Arrange
+    TaxId taxId1 = new TaxId();
+    TaxId taxId2 = new TaxId();
+      taxId1.setId("id1");
+      taxId2.setId("id2");
+    List<TaxId> taxIds = Arrays.asList(taxId1, taxId2);
+    Invoice invoice = new Invoice();
+
+    // Act
+    invoice.setAccountTaxIdObjects(taxIds);
+
+    // Assert
+    List<TaxId> accountTaxIds = invoice.getAccountTaxIdObjects();
+    assertNotNull(accountTaxIds);
+    assertEquals(2, accountTaxIds.size());
+    assertEquals("id1", accountTaxIds.get(0).getId());
+    assertEquals(taxId1, accountTaxIds.get(0));
+    assertEquals("id2", accountTaxIds.get(1).getId());
+    assertEquals(taxId2, accountTaxIds.get(1));
   }
 }
