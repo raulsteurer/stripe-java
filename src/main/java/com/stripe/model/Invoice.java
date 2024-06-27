@@ -2,6 +2,7 @@
 package com.stripe.model;
 
 import com.google.gson.annotations.SerializedName;
+import com.stripe.BranchCoverageUtil;
 import com.stripe.exception.StripeException;
 import com.stripe.model.testhelpers.TestClock;
 import com.stripe.net.ApiMode;
@@ -836,6 +837,7 @@ public class Invoice extends ApiResource implements HasId, MetadataStore<Invoice
 
   public void setAccountTaxIds(List<String> ids) {
     if (ids == null) {
+      BranchCoverageUtil.insertXAtIndex(15);
       this.accountTaxIds = null;
       return;
     }
@@ -844,15 +846,15 @@ public class Invoice extends ApiResource implements HasId, MetadataStore<Invoice
             .map(x -> x.getId())
             .collect(Collectors.toList())
             .equals(ids)) {
+      BranchCoverageUtil.insertXAtIndex(16);
       // noop if the ids are equal to what are already present
       return;
     }
+    BranchCoverageUtil.insertXAtIndex(17);
     this.accountTaxIds =
-        (ids != null)
-            ? ids.stream()
+             ids.stream()
                 .map(id -> new ExpandableField<TaxId>(id, null))
-                .collect(Collectors.toList())
-            : null;
+                .collect(Collectors.toList());
   }
 
   /** Get expanded {@code accountTaxIds}. */
@@ -863,12 +865,15 @@ public class Invoice extends ApiResource implements HasId, MetadataStore<Invoice
   }
 
   public void setAccountTaxIdObjects(List<TaxId> objs) {
-    this.accountTaxIds =
-        objs != null
-            ? objs.stream()
-                .map(x -> new ExpandableField<TaxId>(x.getId(), x))
-                .collect(Collectors.toList())
-            : null;
+    if (objs != null) {
+      BranchCoverageUtil.insertXAtIndex(18);
+      this.accountTaxIds = objs.stream()
+        .map(x -> new ExpandableField<TaxId>(x.getId(), x))
+        .collect(Collectors.toList());
+    } else {
+      BranchCoverageUtil.insertXAtIndex(19);
+      this.accountTaxIds = null;
+    }
   }
 
   /** Get IDs of expandable {@code discounts} object list. */
