@@ -1,5 +1,6 @@
 package com.stripe;
 
+import java.io.FileOutputStream;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -20,6 +21,8 @@ public class BranchCoverageUtil {
   public static void writeDefault() {
     String filePath = "branchCoverage.txt";
 
+    System.out.println("Method actually called2");
+
     File file = new File(filePath);
     try {
       file.createNewFile();
@@ -27,12 +30,17 @@ public class BranchCoverageUtil {
       logger.log(Level.SEVERE, "Failed to create to file: " + filePath, e);
     }
 
-    try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(filePath), StandardCharsets.UTF_8)) {
-      // Writing an empty string to the file
-      for (int i = 0; i < BRANCHES_COUNT; i++)
-      {
-        writer.write("0");
+    System.out.println("File created");
+
+    try (FileOutputStream fos = new FileOutputStream(filePath)) {
+      System.out.println("Writing to file: " + filePath);
+      // Writing zeros to the file
+      for (int i = 0; i < BRANCHES_COUNT; i++) {
+        System.out.println("iteration");
+        fos.write('0');
       }
+      fos.flush();
+      System.out.println("Successfully wrote to file: " + filePath);
     } catch (IOException e) {
       logger.log(Level.SEVERE, "Failed to write to file: " + filePath, e);
     }
@@ -57,7 +65,7 @@ public class BranchCoverageUtil {
       }
 
       if (index < 0 || index > content.length()) {
-        System.out.println("Index out of bounds.");
+        //System.out.println("Index out of bounds.");
         return;
       }
       content.setCharAt(index, 'X');
