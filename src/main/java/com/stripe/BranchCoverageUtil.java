@@ -14,14 +14,13 @@ import java.util.logging.Logger;
 import java.io.File;
 
 public class BranchCoverageUtil {
-  private final static int BRANCHES_COUNT = 15;
+  private final static int BRANCHES_COUNT = 20;
 
   private final static Logger logger = Logger.getLogger(BranchCoverageUtil.class.getName());
 
   public static void writeDefault() {
     String filePath = "branchCoverage.txt";
 
-    System.out.println("Method actually called2");
 
     File file = new File(filePath);
     try {
@@ -30,13 +29,11 @@ public class BranchCoverageUtil {
       logger.log(Level.SEVERE, "Failed to create to file: " + filePath, e);
     }
 
-    System.out.println("File created");
 
     try (FileOutputStream fos = new FileOutputStream(filePath)) {
       System.out.println("Writing to file: " + filePath);
       // Writing zeros to the file
       for (int i = 0; i < BRANCHES_COUNT; i++) {
-        System.out.println("iteration");
         fos.write('0');
       }
       fos.flush();
